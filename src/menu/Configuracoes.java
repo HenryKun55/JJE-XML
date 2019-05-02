@@ -45,6 +45,8 @@ public class Configuracoes extends JDialog {
 	public JTextField textFieldEmailDestinatario;
 	public JTextField textFieldNomeDaEmpresa;
 	public JTextField textFieldAssunto;
+	public JTextField textFieldUsuarioBanco;
+	public JTextField textFieldSenhaBanco;
 	public JPasswordField textFieldEmailSenhaRemetente;
 	
 	private JButton buttonSalvar;
@@ -60,9 +62,7 @@ public class Configuracoes extends JDialog {
 	private Error error = new Error();
 	private Principal principal = new Principal();
 	private static Usuario usuario;
-	
-	private static Connection conectar;
-	
+
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Singleton
 	
@@ -114,7 +114,9 @@ public class Configuracoes extends JDialog {
                 			textFieldEmailDestinatario.getText(), 
                 			textFieldAssunto.getText(), 
                 			usuario.getHost(), 
-                			passString.toString());
+                			passString.toString(),
+							usuario.getUsuarioBanco(),
+							usuario.getSenhaBanco());
                 	usuario.setRemetente(textFieldEmailRemetente.getText());
 					usuario.setDestinatario(textFieldEmailDestinatario.getText());
 					usuario.setNomeEmpresa(textFieldNomeDaEmpresa.getText());
@@ -128,7 +130,7 @@ public class Configuracoes extends JDialog {
 						}
 						
 						principal.update(usuario.getNomeEmpresa(), usuario.getRemetente(), usuario.getDestinatario(),
-								usuario.getAssunto(),usuario.getHost(), usuario.getSenha());
+								usuario.getAssunto(),usuario.getHost(), usuario.getSenha(), usuario.getUsuarioBanco(), usuario.getSenhaBanco());
 						
 						error.setMensagem(error.DadosSalvosConfiguracoes());
 						principal.mensagem(error.getMensagem());
@@ -142,9 +144,9 @@ public class Configuracoes extends JDialog {
 		});
 		return 1;
 	}
-	
+
 	public Configuracoes() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(principal.getIcone()));
+		setIconImage(principal.getIcone());
 		usuario = Usuario.getInstance();
 		pt = new PropriedadesTela(returnIn());
 		setDefaultCloseOperation(windowClosing());
@@ -154,7 +156,7 @@ public class Configuracoes extends JDialog {
 		contentPane();
 		setContentPane(contentPane);
 		setResizable(false);
-		setSize(590, 300);
+		setSize(590, 400);
 		setLocationRelativeTo(null);
 		design();
 	}
@@ -181,7 +183,8 @@ public class Configuracoes extends JDialog {
 		labelDestinatario();
 		labelNomeDaEmpresa();
 		labelAssunto();
-
+		labelUsuarioBanco();
+		labelSenhaBanco();
 	}
 	
 	public void inputs() {
@@ -190,6 +193,8 @@ public class Configuracoes extends JDialog {
 		inputDestinatario();
 		inputNomeDaEmpresa();
 		inputAssunto();
+		inputUsuarioBanco();
+		inputSenhaBanco();
 	}
 	
 	public void buttons() {
@@ -239,6 +244,22 @@ public class Configuracoes extends JDialog {
 		label.setBounds(100, 180, 200, 22);
 		contentPane.add(label);
 	}
+
+	public void labelUsuarioBanco() {
+		label = new JLabel("Usuário Banco: ");
+		label.setFont(fontePadrao);
+		label.setForeground(Color.WHITE);
+		label.setBounds(100, 220, 200, 22);
+		contentPane.add(label);
+	}
+
+	public void labelSenhaBanco() {
+		label = new JLabel("Senha Banco: ");
+		label.setFont(fontePadrao);
+		label.setForeground(Color.WHITE);
+		label.setBounds(100, 260, 200, 22);
+		contentPane.add(label);
+	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -286,9 +307,7 @@ public class Configuracoes extends JDialog {
 		textFieldEmailSenhaRemetente.setFont(fontePadrao);
 		textFieldEmailSenhaRemetente.setColumns(10);
 		textFieldEmailSenhaRemetente.setFont(fontePlaceHolder);
-		//textFieldEmailSenhaRemetente.setForeground(colorPlaceHolder);
 		textFieldEmailSenhaRemetente.setText(usuario.getSenha());
-		//System.out.println(textFieldEmailSenhaRemetente.getPassword());
 		textFieldEmailSenhaRemetente.addFocusListener(new FocusListener() {
 			
 			char[] input = textFieldEmailSenhaRemetente.getPassword();
@@ -422,6 +441,26 @@ public class Configuracoes extends JDialog {
 			}
 		});
 	}
+
+	public void inputUsuarioBanco() {
+		textFieldUsuarioBanco = new JTextField();
+		textFieldUsuarioBanco.setBounds(215, 221, 262, 22);
+		contentPane.add(textFieldUsuarioBanco);
+		textFieldUsuarioBanco.setFont(fontePadrao);
+		textFieldUsuarioBanco.setColumns(10);
+		textFieldUsuarioBanco.setFont(fontePlaceHolder);
+		textFieldUsuarioBanco.setText(usuario.getUsuarioBanco());
+	}
+
+	public void inputSenhaBanco() {
+		textFieldSenhaBanco = new JPasswordField();
+		textFieldSenhaBanco.setBounds(205, 261, 272, 22);
+		contentPane.add(textFieldSenhaBanco);
+		textFieldSenhaBanco.setFont(fontePadrao);
+		textFieldSenhaBanco.setColumns(10);
+		textFieldSenhaBanco.setFont(fontePlaceHolder);
+		textFieldSenhaBanco.setText(usuario.getSenhaBanco());
+	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
@@ -429,47 +468,46 @@ public class Configuracoes extends JDialog {
 	
 	public void buttonSalvar() {
 		buttonSalvar = new JButton("Salvar");
-		buttonSalvar.setBounds(240, 220, 97, 30);
+		buttonSalvar.setBounds(260, 320, 97, 30);
 		contentPane.add(buttonSalvar);
 		
-		buttonSalvar.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				if(textFieldEmailRemetente.getText().equals("") ||
-				   textFieldEmailDestinatario.getText().equals("") ||
-				   textFieldNomeDaEmpresa.getText().equals("") || textFieldNomeDaEmpresa.getText().isEmpty() || 
-				   textFieldAssunto.getText().equals("") || textFieldAssunto.getText().isEmpty()) {
-						error.setMensagem(error.DadosIncompletosConfiguracoes());
+		buttonSalvar.addActionListener(e -> {
+			if(textFieldEmailRemetente.getText().equals("") ||
+			   textFieldEmailDestinatario.getText().equals("") ||
+			   textFieldNomeDaEmpresa.getText().equals("") || textFieldNomeDaEmpresa.getText().isEmpty() ||
+			   textFieldAssunto.getText().equals("") || textFieldAssunto.getText().isEmpty()) {
+					error.setMensagem(error.DadosIncompletosConfiguracoes());
+					principal.mensagem(error.getMensagem());
+
+			}else {
+				if( validar(textFieldEmailRemetente.getText()) && validar(textFieldEmailDestinatario.getText()) )  {
+
+					char[] input = textFieldEmailSenhaRemetente.getPassword();
+					String passString = new String(input);
+
+					//System.out.println(passString);
+
+					usuario.setRemetente(textFieldEmailRemetente.getText());
+					usuario.setDestinatario(textFieldEmailDestinatario.getText());
+					usuario.setNomeEmpresa(textFieldNomeDaEmpresa.getText());
+					usuario.setAssunto(textFieldAssunto.getText());
+					usuario.setSenha(passString.toString());
+					usuario.setUsuarioBanco(textFieldUsuarioBanco.getText());
+					usuario.setSenhaBanco(textFieldSenhaBanco.getText());
+
+					// System.out.println(smtp(usuario.getRemetente()));
+
+					principal.update(usuario.getNomeEmpresa(), usuario.getRemetente(), usuario.getDestinatario(),
+							usuario.getAssunto(),usuario.getHost(), usuario.getSenha(), usuario.getUsuarioBanco(), usuario.getSenhaBanco());
+
+					error.setMensagem(error.DadosSalvosConfiguracoes());
+					principal.mensagem(error.getMensagem());
+					salvar = true;
+					dispose();
+					}else {
+						error.setMensagem(error.EmailErrado());
 						principal.mensagem(error.getMensagem());
-						
-				}else {
-					if( validar(textFieldEmailRemetente.getText()) && validar(textFieldEmailDestinatario.getText()) )  {
-						
-						char[] input = textFieldEmailSenhaRemetente.getPassword();
-					    String passString = new String(input);
-					    
-					    System.out.println(passString);
-						
-						usuario.setRemetente(textFieldEmailRemetente.getText());
-						usuario.setDestinatario(textFieldEmailDestinatario.getText());
-						usuario.setNomeEmpresa(textFieldNomeDaEmpresa.getText());
-						usuario.setAssunto(textFieldAssunto.getText());
-						usuario.setSenha(passString.toString());
-						
-						System.out.println(smtp(usuario.getRemetente()));
-							
-						principal.update(usuario.getNomeEmpresa(), usuario.getRemetente(), usuario.getDestinatario(),
-								usuario.getAssunto(),usuario.getHost(), usuario.getSenha());
-						
-						error.setMensagem(error.DadosSalvosConfiguracoes());
-						principal.mensagem(error.getMensagem());
-						salvar = true;
-						dispose();
-						}else {
-							error.setMensagem(error.EmailErrado());
-							principal.mensagem(error.getMensagem());
-						}
-				}
+					}
 			}
 		});
 	}

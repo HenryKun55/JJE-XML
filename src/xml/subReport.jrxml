@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subReprt" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0cb8b763-960c-489a-b781-57f437abefd0">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<queryString>
+		<![CDATA[select *,(select valor from parametros where descricao = 'versao') as versao from registro]]>
+	</queryString>
+	<field name="nome" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nome"/>
+	</field>
+	<field name="razao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="razao"/>
+	</field>
+	<field name="endereco" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="endereco"/>
+	</field>
+	<field name="bairro" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="bairro"/>
+	</field>
+	<field name="cep" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cep"/>
+	</field>
+	<field name="cidade" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cidade"/>
+	</field>
+	<field name="uf" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="uf"/>
+	</field>
+	<field name="fone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fone"/>
+	</field>
+	<field name="cnpj" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cnpj"/>
+	</field>
+	<field name="ie" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ie"/>
+	</field>
+	<field name="url" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="url"/>
+	</field>
+	<field name="email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="email"/>
+	</field>
+	<field name="operacional" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="operacional"/>
+	</field>
+	<field name="imp_federais" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="imp_federais"/>
+	</field>
+	<field name="nboleto" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="nboleto"/>
+	</field>
+	<field name="fiscal" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="fiscal"/>
+	</field>
+	<field name="ultimo_acesso" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="ultimo_acesso"/>
+	</field>
+	<field name="dvua" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="dvua"/>
+	</field>
+	<field name="chave" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="chave"/>
+	</field>
+	<field name="datareg" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="datareg"/>
+	</field>
+	<field name="simples" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="simples"/>
+	</field>
+	<field name="industria" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="industria"/>
+	</field>
+	<field name="conexoes" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="conexoes"/>
+	</field>
+	<field name="inscricao_municipal" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="inscricao_municipal"/>
+	</field>
+	<field name="cnae" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cnae"/>
+	</field>
+	<field name="contato" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="contato"/>
+	</field>
+	<field name="prestador_servico" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="prestador_servico"/>
+	</field>
+	<field name="inscricao_substituto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="inscricao_substituto"/>
+	</field>
+	<field name="inscricao_sulframa" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="inscricao_sulframa"/>
+	</field>
+	<field name="apuracaoregimecaixa" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="apuracaoregimecaixa"/>
+	</field>
+	<field name="cooperativa" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="cooperativa"/>
+	</field>
+	<field name="checagem" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="checagem"/>
+	</field>
+	<field name="mei" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="mei"/>
+	</field>
+	<field name="versao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="versao"/>
+	</field>
+	<title>
+		<band height="114" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="560" height="20" uuid="9abae121-ccc9-43eb-afe1-ad993b8367ee"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{razao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="560" height="20" uuid="d446316d-d6fb-45da-8171-773480b7d657"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="40" width="400" height="15" uuid="b96a91a7-9f0a-44d8-8385-824771fd8224"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{endereco}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="55" width="400" height="15" uuid="5ca495e8-55fd-4f23-9ce3-ca4d41022671"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bairro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="70" width="400" height="15" uuid="62324020-afde-4c41-a6f8-ce6e7899d3c9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cidade}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="85" width="200" height="15" uuid="9fbc5a53-bd9d-4011-89b9-7c18c9c85882"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cnpj}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="150" y="85" width="100" height="15" uuid="aac525d0-b36e-43f5-b4ce-b33d60583f25"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[CNPJ:]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>

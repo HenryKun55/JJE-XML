@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/XML JJE.iml" filepath="$PROJECT_DIR$/XML JJE.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jje-xml/jje-xml.iml" filepath="$PROJECT_DIR$/jje-xml/jje-xml.iml" />
     </modules>
   </component>
 </project>

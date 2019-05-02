@@ -1,20 +1,13 @@
 package util;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.SocketException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.StringTokenizer;
-
-import javax.swing.SwingUtilities;
 
 import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTP;
@@ -64,7 +57,7 @@ public class Update {
 		version = Version.getInstance();
 
 		ftpUrl = String.format(ftpUrl, user, pass, host, filePath);
-		System.out.println("URL: " + ftpUrl);
+		//System.out.println("URL: " + ftpUrl);
 
 		try {
 			URL url = new URL(ftpUrl);
@@ -80,7 +73,7 @@ public class Update {
 				if(line.contains("JJE")) {
 
 					//System.out.println("Oi");
-					System.out.println(line);
+					//System.out.println(line);
 					return line;
 				}else {
 
@@ -95,7 +88,7 @@ public class Update {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		return null;
+		return "";
 	}
 	
 	public Update() {

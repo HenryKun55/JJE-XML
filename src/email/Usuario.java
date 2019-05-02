@@ -17,12 +17,15 @@ public class Usuario {
 		
 	private String remetente = "jje.xml@gmail.com";
 	private String nomeEmpresa = "JJE";
-	private String senha = "trbablcmgtruemtd";
-	private String destinatario = "jje.xml@gmail.com";;
+	private String senha = "csilbgezuyeimjfs";
+	private String destinatario = "jje.xml@gmail.com";
+	private String usuarioBanco = "postgres";
+	private String senhaBanco = "Teste55";
 	private String mes;
 	private String ano;
 	private String assunto = "Enviando XML";
 	private String host = gmail();
+	private String hostControl;
 
 	public String getRemetente() {
 		return remetente;
@@ -42,6 +45,10 @@ public class Usuario {
 	public void setDestinatario(String destinatario) {
 		this.destinatario = destinatario;
 	}
+	public String getUsuarioBanco() { return usuarioBanco; }
+	public void setUsuarioBanco(String usuarioBanco) { this.usuarioBanco = usuarioBanco; }
+	public String getSenhaBanco() { return senhaBanco; }
+	public void setSenhaBanco(String senhaBanco) { this.senhaBanco = senhaBanco; }
 	public String getMes() {
 		return mes;
 	}
@@ -72,7 +79,9 @@ public class Usuario {
 	public void setHost(String host) {
 		this.host = host;
 	}
-	
+	public String getHostControl() { return hostControl; }
+	public void setHostControl(String hostControl) { this.hostControl = hostControl; }
+
 	public String gmail() {
 		return "smtp.gmail.com";
 	}

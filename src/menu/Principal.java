@@ -1,42 +1,23 @@
 package menu;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Insets;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.mail.MessagingException;
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -47,10 +28,7 @@ import email.Email;
 import email.Usuario;
 import email.Version;
 import mensagens.Error;
-import util.Connect;
-import util.PropriedadesTela;
-import util.Update;
-import util.Zip;
+import util.*;
 
 public class Principal extends JFrame {
 
@@ -63,7 +41,6 @@ public class Principal extends JFrame {
 	private Font fonteLabelHeader = new Font("Tahoma", Font.PLAIN, 28);
 	private Font fontePadrao = new Font("Tahoma", Font.PLAIN, 17);
 	private Font fontePlaceHolder= new Font("Tahoma", Font.PLAIN, 17);
-	private Color colorPlaceHolder = Color.decode("#898B8C");
 	private JLabel label;
 	private JTextField textFieldEmail;
 	private String[] meses = {"01Janeiro", "02Fevereiro", "03Março", "04Abril", "05Maio", "06Junho", "07Julho", "08Agosto", "09Setembro", "10Outubro", "11Novembro", "12Dezembro"};
@@ -77,50 +54,38 @@ public class Principal extends JFrame {
 	private JButton buttonEnviar;
 
 	private String destino;
-	private String icone;
+	private Image icone;
+	private String destinoControl;
 
-	public String getIcone() {
+	public Image getIcone() {
 		return icone;
 	}
 
 	private boolean emailConfigurado;
 
-	public String getDestino() {
-		return destino;
-	}
+	public String getDestino() { return destino; }
 
-	public void setDestino(String destino) {
-		this.destino = destino;
-	}
-
-	public String[] getMeses() {
-		return meses;
-	}
-
-	public void setMeses(String[] meses) {
-		this.meses = meses;
-	}
+	public String getDestinoControl() { return destinoControl; }
 
 	private Error error = new Error();
 	private Zip zip = new Zip();
-	public static Email email = new Email();
+	private Email email = new Email();
 	private Usuario usuario;
 	private Version version;
 	private Connect con = new Connect();
 	private Update update = Update.getInstance();
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Iniciar o JFrame
 
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Principal window = new Principal();
-					window.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				Principal window = new Principal();
+				window.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -133,21 +98,14 @@ public class Principal extends JFrame {
 
 		File theDir = new File("C:\\Temp\\");
 
-		// if the directory does not exist, create it
 		if (!theDir.exists()) {
-			//System.out.println("creating directory: " + theDir.getName());
 			boolean result = false;
-
 			try{
 				theDir.mkdir();
 				result = true;
 			} 
-			catch(SecurityException se){
-				//handle it
-			}        
-			if(result) {    
-
-			}
+			catch(SecurityException se){ }
+			if(result) { }
 		}
 	}
 
@@ -156,13 +114,12 @@ public class Principal extends JFrame {
 	//CheckDB
 
 	public Connection checkDb() {
-
 		String sql2 = "SELECT * FROM XMLSEND";
+		Connection conn = null;
 		try {
-			Connection conn = con.conectar();
+			conn = Connect.conectar();
 			Statement stmt  = conn.createStatement();
 			ResultSet rs    = stmt.executeQuery(sql2);
-			// loop through the result set
 			while (rs.next()) {
 				usuario.setNomeEmpresa(rs.getString("NOME_EMPRESA"));
 				usuario.setRemetente(rs.getString("USUARIO"));
@@ -170,20 +127,21 @@ public class Principal extends JFrame {
 				usuario.setAssunto(rs.getString("ASSUNTO"));
 				usuario.setHost(rs.getString("HOST"));
 				usuario.setSenha(rs.getString("SENHA"));
+				usuario.setUsuarioBanco(rs.getString("USUARIO_BANCO"));
+				usuario.setSenhaBanco(rs.getString("SENHA_BANCO"));
 			}
 		} catch (SQLException e) { 
 			e.printStackTrace();
 		}
-		return null;
+		return conn;
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Insert New Data
 
-	public Connection update(String NOME_EMPRESA, String USUARIO, String DESTINATARIO, String ASSUNTO, String HOST, String SENHA) {
-		String sql = "UPDATE XMLSEND SET NOME_EMPRESA = ?, USUARIO = ?, DESTINATARIO = ?, ASSUNTO = ?, HOST = ?, SENHA = ?";
-
+	public Connection update(String NOME_EMPRESA, String USUARIO, String DESTINATARIO, String ASSUNTO, String HOST, String SENHA, String USUARIO_BANCO, String SENHA_BANCO) {
+		String sql = "UPDATE XMLSEND SET NOME_EMPRESA = ?, USUARIO = ?, DESTINATARIO = ?, ASSUNTO = ?, HOST = ?, SENHA = ?, USUARIO_BANCO = ?, SENHA_BANCO = ?";
 		try {
 			Connection conn = con.conectar();
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -193,6 +151,8 @@ public class Principal extends JFrame {
 			pstmt.setString(4, ASSUNTO);
 			pstmt.setString(5, HOST);
 			pstmt.setString(6, SENHA);
+			pstmt.setString(7, USUARIO_BANCO);
+			pstmt.setString(8, SENHA_BANCO);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -223,7 +183,8 @@ public class Principal extends JFrame {
 	//Construtor 
 
 	public Principal() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(icone));
+		setIcone();
+		setIconImage(icone);
 		usuario = Usuario.getInstance();
 		version = Version.getInstance();
 		UIManager.put("Menu.font", fontePadrao);
@@ -243,6 +204,22 @@ public class Principal extends JFrame {
 		design();
 		updateVersion(version.getVersion());
 		checkForUpdates();
+		readFile();
+	}
+
+	private void readFile(){
+		List<String> lines = null;
+		try {
+			lines = FileUtils.readLines(new File(getDestinoControl()+"config.ini"), "UTF-8");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (String line: lines) {
+			if(line.contains("host")){
+				line = line.substring(5);
+				usuario.setHostControl(line);
+			}
+		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -358,7 +335,7 @@ public class Principal extends JFrame {
 					textFieldEmail.setForeground(Color.BLACK);
 					textFieldEmail.setText(usuario.getDestinatario());
 					emailConfigurado = frame.getSalvar();
-					System.out.println(usuario.getHost());
+					//System.out.println(usuario.getHost());
 					//System.out.println(usuario.getRemetente());
 				}
 			}
@@ -484,11 +461,11 @@ public class Principal extends JFrame {
 	}
 
 	public void labelVersion() {
-		label = new JLabel("V 1.8");
+		label = new JLabel("V 2.2");
 		version.setVersion(label.getText());
 		//System.out.println(getVersion());
 		label.setForeground(Color.WHITE);
-		label.setBounds(280, 50, 200, 22);
+		label.setBounds(275, 330, 200, 16);
 		contentPane.add(label);
 	}
 
@@ -582,16 +559,16 @@ public class Principal extends JFrame {
 					zip.ziparPasta(zip.getFolderPath());
 					usuario.setDestinatario(textFieldEmail.getText());
 					update(usuario.getNomeEmpresa(), usuario.getRemetente(), usuario.getDestinatario(),
-							usuario.getAssunto(),usuario.getHost(), usuario.getSenha());
+							usuario.getAssunto(),usuario.getHost(), usuario.getSenha(), usuario.getUsuarioBanco(), usuario.getSenhaBanco());
+
 					try {
-						email.main(null);
-					} catch (UnsupportedEncodingException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (MessagingException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						email.send();
+					} catch (MessagingException ex) {
+						ex.printStackTrace();
+					} catch (UnsupportedEncodingException ex) {
+						ex.printStackTrace();
 					}
+
 				}else if(!emailConfigurado) {
 					error.setMensagem(error.EmailNaoConfigurado());
 					mensagem(error.getMensagem());
@@ -664,6 +641,7 @@ public class Principal extends JFrame {
 						});
 						if(Arrays.toString(directoriesInside).contains("arpa")){
 							//icone = diretorio.toString()+"\\JJE XML\\xml.ico";
+							destinoControl = diretorio.toString()+"\\arpa\\control\\";
 							destino = diretorio.toString()+"\\arpa\\control\\nfe";
 							//System.out.println(destino);
 							diretorio = new File(diretorio.toString()+"\\arpa\\control\\nfe");
@@ -768,13 +746,17 @@ public class Principal extends JFrame {
 		//System.out.println("------------------------------------");
 		//System.out.println(Arrays.toString(desktopinside));
 		//System.out.println("------------------------------------");
-		for(String a : desktopinside) {
-			if(a.contains("JJE XML")) {
-				jjexml = new File(desktop+"/"+a);
-				System.out.println(jjexml);
+		try {
+			for(String a : desktopinside) {
+				if(a.contains("JJE XML")) {
+					jjexml = new File(desktop+"/"+a);
+					//System.out.println(jjexml);
+				}
 			}
+		} catch (Exception e){
+			e.printStackTrace();
 		}
-		
+
 		try {
 			update = new Update(update.host,21, update.user, update.pass);
 		} catch (Exception e1) {
@@ -783,50 +765,51 @@ public class Principal extends JFrame {
 		}
 		
 		//System.out.println(oi.substring(8, 11));
-		System.out.println(version.getVersion().substring(2, 5));
-		String file = versao.substring(62,77);
+		//System.out.println(version.getVersion().substring(2, 5));
+		String file = (versao.isEmpty() ? "" : versao.substring(62,77));
 		
 		File pasta = new File(getDestino());
-		System.out.println(pasta);
+		//System.out.println(pasta);
 		pasta = pasta.getParentFile().getParentFile().getParentFile();
-		System.out.println(pasta);
+		//System.out.println(pasta);
 		pasta = new File(pasta+"//JJE XML");
-		if(pasta.isDirectory()) {
-			System.out.println("opa");
-		}
-		System.out.println(jjexml);
-		
-		if(!version.getVersion().substring(2, 5).contains(versao.substring(70,73))) {
-			int reply = JOptionPane.showConfirmDialog(null, "Tem atualização disponível, deseja atualizar para a versão "+versao.substring(70, 73)+" ?", "JJE XML", JOptionPane.YES_NO_OPTION);
-	        if (reply == JOptionPane.YES_OPTION) {
-	        	
-	        	try {
-					update.downloadFTPFile(update.filePath+file, update.destination);
-					update.disconnect();
-					try {
-						jjexml.delete();
-						FileUtils.deleteDirectory(pasta);
-					}catch(Exception e) {
-						//e.printStackTrace();
-					}
-					error.setMensagem(error.DownloadCompleto());
-					mensagem(error.getMensagem());
-					String command = update.destination;
-					ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", command);
-					Process p = pb.start();
-					System.exit(0);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	        }
-	        else {
+		//if(pasta.isDirectory()) {
+			//System.out.println("opa");
+		//}
+		//System.out.println(jjexml);
+		if(!file.isEmpty()) {
+			if (!version.getVersion().substring(2, 5).contains(versao.substring(70, 73))) {
+				int reply = JOptionPane.showConfirmDialog(null, "Tem atualização disponível, deseja atualizar para a versão " + versao.substring(70, 73) + " ?", "JJE XML", JOptionPane.YES_NO_OPTION);
+				if (reply == JOptionPane.YES_OPTION) {
 
-	        }
+					try {
+						update.downloadFTPFile(update.filePath + file, update.destination);
+						update.disconnect();
+						try {
+							jjexml.delete();
+							FileUtils.deleteDirectory(pasta);
+						} catch (Exception e) {
+							//e.printStackTrace();
+						}
+						error.setMensagem(error.DownloadCompleto());
+						mensagem(error.getMensagem());
+						String command = update.destination;
+						ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", command);
+						Process p = pb.start();
+						System.exit(0);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
+				}
+			}
 		}
-		
-			
 	}
-	
+
+	public void setIcone() {
+		this.icone = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/logo.png"));
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
