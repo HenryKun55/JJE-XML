@@ -114,7 +114,7 @@ public class Configuracoes extends JDialog {
                 			textFieldEmailDestinatario.getText(), 
                 			textFieldAssunto.getText(), 
                 			usuario.getHost(), 
-                			passString.toString(),
+                			passString,
 							usuario.getUsuarioBanco(),
 							usuario.getSenhaBanco());
                 	usuario.setRemetente(textFieldEmailRemetente.getText());
@@ -491,7 +491,7 @@ public class Configuracoes extends JDialog {
 					usuario.setDestinatario(textFieldEmailDestinatario.getText());
 					usuario.setNomeEmpresa(textFieldNomeDaEmpresa.getText());
 					usuario.setAssunto(textFieldAssunto.getText());
-					usuario.setSenha(passString.toString());
+					usuario.setSenha(passString);
 					usuario.setUsuarioBanco(textFieldUsuarioBanco.getText());
 					usuario.setSenhaBanco(textFieldSenhaBanco.getText());
 

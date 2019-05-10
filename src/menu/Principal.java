@@ -217,7 +217,12 @@ public class Principal extends JFrame {
 		for (String line: lines) {
 			if(line.contains("host")){
 				line = line.substring(5);
+				//System.out.println(line);
 				usuario.setHostControl(line);
+			}
+			if(line.contains("nomebase")){
+				line = line.substring(9);
+				usuario.setNomeBase(line);
 			}
 		}
 	}
@@ -461,7 +466,7 @@ public class Principal extends JFrame {
 	}
 
 	public void labelVersion() {
-		label = new JLabel("V 2.2");
+		label = new JLabel("V 2.3");
 		version.setVersion(label.getText());
 		//System.out.println(getVersion());
 		label.setForeground(Color.WHITE);
@@ -737,15 +742,11 @@ public class Principal extends JFrame {
 		String versao = update.verificar();
 		File jjexml = null;
 		File desktop = new File(System.getProperty("user.home")+"/Desktop/");
-		String[] desktopinside = desktop.list(new FilenameFilter() {
-			@Override
-			public boolean accept(File current, String name) {
-				return new File(current, name).isFile();
-			}
-		});
+		String[] desktopinside = desktop.list((current, name) -> new File(current, name).isFile());
 		//System.out.println("------------------------------------");
 		//System.out.println(Arrays.toString(desktopinside));
 		//System.out.println("------------------------------------");
+
 		try {
 			for(String a : desktopinside) {
 				if(a.contains("JJE XML")) {

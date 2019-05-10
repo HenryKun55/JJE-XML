@@ -76,7 +76,7 @@ public class Connect {
 		return con;
 	}
 
-	public static Connection print(String host, String USUARIO_BANCO, String SENHA_BANCO) {
+	public static Connection print(String host, String nomeBase, String USUARIO_BANCO, String SENHA_BANCO) {
 		Connection con = null;
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -87,7 +87,7 @@ public class Connect {
 		props.setProperty("user", USUARIO_BANCO);
 		props.setProperty("password", SENHA_BANCO);
 		try {
-			con = DriverManager.getConnection("jdbc:postgresql://"+host+":5432/control", props);
+			con = DriverManager.getConnection("jdbc:postgresql://"+host+":5432/"+nomeBase, props);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -100,7 +100,7 @@ public class Connect {
 		boolean result = false;
 
 		if (!theDir.exists()) {
-			System.out.println("creating directory: " + theDir.getName());
+			//System.out.println("creating directory: " + theDir.getName());
 			try{
 				theDir.mkdir();
 				result = true;

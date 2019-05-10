@@ -2,26 +2,13 @@ package util;
 
 import email.Usuario;
 import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.design.JRDesignQuery;
 import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.xml.JRGenericPrintElementParameterFactory;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.swing.JRViewer;
-import org.omg.Dynamic.Parameter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.sql.Connection;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.List;
 
 public class PrintReport extends JFrame {
 
@@ -30,7 +17,7 @@ public class PrintReport extends JFrame {
 
     public void showReport(String ip) throws JRException {
         Usuario u = Usuario.getInstance();
-        connection = Connect.print(ip, u.getUsuarioBanco(), u.getSenhaBanco());
+        connection = Connect.print(ip, u.getNomeBase(), u.getUsuarioBanco(), u.getSenhaBanco());
 
         //System.out.println(getClass().getResource("/xml"));
 

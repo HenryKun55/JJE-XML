@@ -70,7 +70,7 @@ public class Zip {
             		
             	} else {
             	
-	                System.out.println(sourceFolder + unzippedFile);
+	                //System.out.println(sourceFolder + unzippedFile);
 	
 	                ZipEntry entry = new ZipEntry(unzippedFile);
 	                zos.putNextEntry(entry);
@@ -153,7 +153,7 @@ public class Zip {
 
                 }catch(Exception e){}finally{}
 
-                System.out.println("dir:" + dir);
+                //System.out.println("dir:" + dir);
 
                 fos = new FileOutputStream((file.getParent() == null? "":file.getParent()+ File.separator) + entry.getName());
 
@@ -192,7 +192,7 @@ public class Zip {
         if (node.isDirectory()){
         	//System.out.println(node);
         	if(node.isFile()) {
-        		System.out.println("Contém arquivo");
+        		//System.out.println("Contém arquivo");
         	}else {
 
 	            String dir = node.getAbsoluteFile().toString();

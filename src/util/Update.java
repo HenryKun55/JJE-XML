@@ -102,7 +102,7 @@ public class Update {
         ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
         int reply;
         ftp.connect(host,port);
-        System.out.println("FTP URL is:"+ftp.getDefaultPort());
+        //System.out.println("FTP URL is:"+ftp.getDefaultPort());
         reply = ftp.getReplyCode();
         if (!FTPReply.isPositiveCompletion(reply)) {
             ftp.disconnect();
@@ -119,11 +119,11 @@ public class Update {
     	//frame.setModal(true);
     	//frame.setVisible(true);
     	
-    	System.out.println(this.ftp);
+    	//System.out.println(this.ftp);
     	
     	try {
 			file = this.ftp.mlistFile(source);
-			System.out.println("O arquivo é :" + file);
+			//System.out.println("O arquivo é :" + file);
     	} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

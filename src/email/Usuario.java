@@ -26,6 +26,7 @@ public class Usuario {
 	private String assunto = "Enviando XML";
 	private String host = gmail();
 	private String hostControl;
+	private String nomeBase;
 
 	public String getRemetente() {
 		return remetente;
@@ -73,14 +74,14 @@ public class Usuario {
 	public void setNomeEmpresa(String nomeEmpresa) {
 		this.nomeEmpresa = nomeEmpresa;
 	}
-	public String getHost() {
-		return host;
-	}
+	public String getHost() { return host; }
 	public void setHost(String host) {
 		this.host = host;
 	}
 	public String getHostControl() { return hostControl; }
 	public void setHostControl(String hostControl) { this.hostControl = hostControl; }
+	public String getNomeBase() { return nomeBase; }
+	public void setNomeBase(String nomeBase) { this.nomeBase = nomeBase; }
 
 	public String gmail() {
 		return "smtp.gmail.com";
